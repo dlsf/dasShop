@@ -12,5 +12,27 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
+    compileOnly("org.jetbrains:annotations:24.0.1")
+}
+
+tasks {
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+
+    processResources {
+        filesMatching("**/plugin.yml") {
+            expand(rootProject.project.properties)
+        }
+
+        // Always re-run this task
+        outputs.upToDateWhen { false }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
