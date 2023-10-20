@@ -1,0 +1,4 @@
+main: moe.das.dasshop.DasShop
+name: dasShop
+version: 'ALPHA'
+api-version: '1.13'
