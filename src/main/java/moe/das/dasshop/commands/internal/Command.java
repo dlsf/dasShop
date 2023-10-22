@@ -1,4 +1,10 @@
-package moe.das.dasshop.commands;
+package moe.das.dasshop.commands.internal;
 
-public class Command {
+import org.bukkit.command.CommandSender;
+
+public abstract class Command {
+    @SubCommand(senderType = SenderType.ALL, synonyms = {"test"})
+    public void basicTest(CommandSender commandSender, String text) {
+
+    }
 }

@@ -2,3 +2,4 @@ main: moe.das.dasshop.DasShop
 name: dasShop
 version: ${version}
 api-version: '1.18'
+author: 'das_'

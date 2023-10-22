@@ -19,6 +19,7 @@ dependencies {
 tasks {
     compileJava {
         options.encoding = "UTF-8"
+        options.compilerArgs.add("-parameters")
     }
 
     processResources {
