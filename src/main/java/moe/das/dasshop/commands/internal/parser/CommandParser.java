@@ -17,12 +17,14 @@ public class CommandParser {
     private ParsedCommand parseSubCommand(Method subCommand) {
         var annotation = subCommand.getAnnotation(SubCommand.class);
         var methodParameters = subCommand.getParameters();
+
         var firstParameter = methodParameters[0];
         if (firstParameter.getType() != annotation.senderType().getWrappingClass()) {
             throw new IllegalStateException("Incorrectly configured subcommand " + subCommand.getName());
         }
 
         var parsedCommandBuilder = new ParsedCommandBuilder();
+        // We can perform the unchecked cast here since we already checked the first parameter's type above
         parsedCommandBuilder.withSender((Class<CommandSender>) firstParameter.getType());
 
         for (int i = 1; (methodParameters.length > 1) && (i < methodParameters.length); i++) {
