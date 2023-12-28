@@ -3,3 +3,7 @@ name: dasShop
 version: ${version}
 api-version: '1.18'
 author: 'das_'
+
+commands:
+  test:
+    description: This is a test command that will be removed eventually
