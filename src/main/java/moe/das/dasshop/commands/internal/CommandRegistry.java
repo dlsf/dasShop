@@ -1,35 +1,24 @@
 package moe.das.dasshop.commands.internal;
 
-import moe.das.dasshop.commands.internal.parser.ParameterFactory;
+import moe.das.dasshop.commands.internal.parser.CommandParser;
 import moe.das.dasshop.commands.internal.parser.ParsedCommand;
-import moe.das.dasshop.commands.internal.parser.ParsedCommandBuilder;
-import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class CommandRegistry {
-    private final Map<Command, Set<ParsedCommand>> registeredCommands;
-
-    public CommandRegistry() {
-        this.registeredCommands = new HashMap<>();
-    }
+    private final Map<Command, Set<ParsedCommand>> registeredCommands = new HashMap<>();
+    private final CommandParser commandParser = new CommandParser();
 
     public void register(@NotNull Command command) {
-        var subCommands = getSubcommandMethods(command);
+        var subCommands = command.getSubcommandMethods();
         if (subCommands.isEmpty()) {
             throw new IllegalStateException("A command has been registered, but there are no subcommands configured");
         }
 
-        var parsedCommands = subCommands.stream()
-                .map(this::parseSubCommand)
-                .collect(Collectors.toSet());
-
+        var parsedCommands = commandParser.parseSubCommands(subCommands);
         registeredCommands.put(command, parsedCommands);
 
         System.out.println("Successfully registered command " + command.getName());
@@ -41,30 +30,5 @@ public class CommandRegistry {
         }
 
         this.registeredCommands.remove(command);
-    }
-
-    private Set<Method> getSubcommandMethods(Command command) {
-        return Arrays.stream(command.getClass().getMethods())
-                .filter(method -> method.isAnnotationPresent(SubCommand.class))
-                .collect(Collectors.toSet());
-    }
-
-    private ParsedCommand parseSubCommand(Method subCommand) {
-        var annotation = subCommand.getAnnotation(SubCommand.class);
-        var parameters = subCommand.getParameters();
-        var firstParameter = parameters[0];
-        if (firstParameter.getType() != annotation.senderType().getWrappingClass()) {
-            throw new IllegalStateException("Incorrectly configured subcommand " + subCommand.getName());
-        }
-
-        var parsedCommandBuilder = ParsedCommandBuilder.create();
-        parsedCommandBuilder.withSender((Class<CommandSender>) firstParameter.getType());
-
-        for (int i = 1; (parameters.length > 1) && (i < parameters.length); i++) {
-            var parsableParameter = ParameterFactory.fromMethodParameter(parameters[i]);
-            parsedCommandBuilder.withParameter(parsableParameter);
-        }
-
-        return parsedCommandBuilder.build();
     }
 }

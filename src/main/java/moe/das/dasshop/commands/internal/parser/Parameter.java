@@ -6,4 +6,8 @@ public abstract class Parameter {
     protected Parameter(String parameterName) {
         this.parameterName = parameterName;
     }
+
+    public String getParameterName() {
+        return parameterName;
+    }
 }

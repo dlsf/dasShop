@@ -9,12 +9,8 @@ public class ParsedCommandBuilder {
     private Class<CommandSender> sender;
     private final List<Parameter> parameters;
 
-    private ParsedCommandBuilder() {
+    public ParsedCommandBuilder() {
         this.parameters = new ArrayList<>();
-    }
-
-    public static ParsedCommandBuilder create() {
-        return new ParsedCommandBuilder();
     }
 
     public void withSender(Class<CommandSender> sender) {
