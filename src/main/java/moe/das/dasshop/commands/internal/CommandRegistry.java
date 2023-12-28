@@ -31,4 +31,8 @@ public class CommandRegistry {
 
         this.registeredCommands.remove(command);
     }
+
+    public void unregisterAll() {
+        registeredCommands.keySet().forEach(this::unregister);
+    }
 }
