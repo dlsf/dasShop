@@ -6,10 +6,4 @@ public abstract class Parameter {
     protected Parameter(String parameterName) {
         this.parameterName = parameterName;
     }
-
-    public static Parameter forMethodParameter(java.lang.reflect.Parameter methodParameter) {
-        var parameterType = ParameterType.resolveParameterType(methodParameter.getType()).orElseThrow();
-
-        return ParameterFactory.fromType(parameterType, methodParameter.getName());
-    }
 }

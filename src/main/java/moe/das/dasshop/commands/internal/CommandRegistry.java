@@ -1,6 +1,6 @@
 package moe.das.dasshop.commands.internal;
 
-import moe.das.dasshop.commands.internal.parser.Parameter;
+import moe.das.dasshop.commands.internal.parser.ParameterFactory;
 import moe.das.dasshop.commands.internal.parser.ParsedCommand;
 import moe.das.dasshop.commands.internal.parser.ParsedCommandBuilder;
 import org.bukkit.command.CommandSender;
@@ -62,7 +62,7 @@ public class CommandRegistry {
         parsedCommandBuilder.withSender((Class<CommandSender>) firstParameter.getType());
 
         for (int i = 1; (parameters.length > 1) && (i < parameters.length); i++) {
-            var parsableParameter = Parameter.forMethodParameter(parameters[i]);
+            var parsableParameter = ParameterFactory.fromMethodParameter(parameters[i]);
             parsedCommandBuilder.withParameter(parsableParameter);
             System.out.println(i);
         }
