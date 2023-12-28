@@ -10,7 +10,7 @@ public class DasShop extends JavaPlugin {
         getLogger().info("Here we go!");
 
         var registry = new CommandRegistry();
-        var testCommand = new TestCommand();
+        var testCommand = new TestCommand("test");
 
         registry.register(testCommand);
     }

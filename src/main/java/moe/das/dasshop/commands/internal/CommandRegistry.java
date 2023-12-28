@@ -20,18 +20,10 @@ public class CommandRegistry {
         this.registeredCommands = new HashMap<>();
     }
 
-    public void unregister(@NotNull Command command) throws IllegalStateException {
-        if (!registeredCommands.containsKey(command)) {
-            throw new IllegalStateException();
-        }
-
-        this.registeredCommands.remove(command);
-    }
-
     public void register(@NotNull Command command) {
         var subCommands = getSubcommandMethods(command);
         if (subCommands.isEmpty()) {
-            throw new IllegalArgumentException("A command has been registered, but there is no subcommand configured");
+            throw new IllegalStateException("A command has been registered, but there are no subcommands configured");
         }
 
         var parsedCommands = subCommands.stream()
@@ -40,8 +32,15 @@ public class CommandRegistry {
 
         registeredCommands.put(command, parsedCommands);
 
-        // TODO: Remove
-        System.out.println("Successfully registered command!");
+        System.out.println("Successfully registered command " + command.getName());
+    }
+
+    public void unregister(@NotNull Command command) throws IllegalStateException {
+        if (!registeredCommands.containsKey(command)) {
+            throw new IllegalStateException();
+        }
+
+        this.registeredCommands.remove(command);
     }
 
     private Set<Method> getSubcommandMethods(Command command) {
@@ -64,7 +63,6 @@ public class CommandRegistry {
         for (int i = 1; (parameters.length > 1) && (i < parameters.length); i++) {
             var parsableParameter = ParameterFactory.fromMethodParameter(parameters[i]);
             parsedCommandBuilder.withParameter(parsableParameter);
-            System.out.println(i);
         }
 
         return parsedCommandBuilder.build();
