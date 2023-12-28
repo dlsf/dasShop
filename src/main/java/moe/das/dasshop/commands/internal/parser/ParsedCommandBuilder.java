@@ -21,11 +21,11 @@ public class ParsedCommandBuilder {
         this.parameters.add(parameter);
     }
 
-    public ParsedCommand build() {
+    public SubCommand build() {
         if (sender == null) {
             throw new IllegalStateException("Command parameters haven't been configured correctly");
         }
 
-        return new ParsedCommand(sender, parameters);
+        return new SubCommand(sender, parameters);
     }
 }
